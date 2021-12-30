@@ -34,17 +34,19 @@ func scanner(port,allport,thread int){
 	 }
 }
 func main(){
-	thread, _ := strconv.Atoi(os.Args[2])
-	if 65535%thread>0{
-	thread = largedivisor(65535,thread)
+	if len(os.Args) > 2 {
+		thread, _ := strconv.Atoi(os.Args[2])
+		if 65535%thread>0{
+		thread = largedivisor(65535,thread)
+		}
+		port:=0
+		fmt.Println("Adding", thread,"workers")
+		wg.Add(thread)
+		for i := 0; i < thread; i++{
+			go scanner(port,65535,thread)
+			port+=65535/thread
+		}
+		wg.Wait()
+		fmt.Println("All Workers Completed")
 	}
-	port:=0
-	fmt.Println("Adding", thread,"workers")
-	wg.Add(thread)
-	for i := 0; i < thread; i++{
-		go scanner(port,65535,thread)
-		port+=65535/thread
-	}
-	wg.Wait()
-	fmt.Println("All Workers Completed")
 }
