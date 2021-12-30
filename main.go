@@ -27,7 +27,7 @@ func scanner(port,allport,thread int){
 	if port+(allport/thread) < allport{
 	allport=port+(allport/thread)
 	}
-	 cmd := exec.Command("/bin/bash", "-c","nmap "+os.Args[1]+" -A -sT   -p "+strconv.Itoa(port)+"-"+strconv.Itoa(allport))
+	 cmd := exec.Command("/bin/bash", "-c","nmap "+os.Args[1]+" -A -sT -p "+strconv.Itoa(port)+"-"+strconv.Itoa(allport))
 	 output, _ := cmd.CombinedOutput()
 	 if strings.Contains(string(output),"SERVICE"){
 	 	fmt.Println(string(output))
